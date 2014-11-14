@@ -50,7 +50,7 @@ void HandleTCPClient (int clntSocket)
         {
             DieWithError ("send() failed");
         }
-
+        echoBuffer[recvMsgSize] = '\0';
         info_s("data", echoBuffer);
 
         // receive next string

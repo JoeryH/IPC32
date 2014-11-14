@@ -26,15 +26,19 @@ int main (int argc, char *argv[])
     {
         echoString = argv_data [i];
         echoStringLen = strlen (echoString);          /* Determine input length */
-
         delaying();
         
-        
-        send(sock, echoString, echoStringLen, 0);
-        
+        if (send(sock, echoString, echoStringLen, 0) < 0) {
+            printf("error in send: exiting");
+            exit(-1);
+        }
         info_s("data", echoString);
         
-        bytesRcvd = recv(sock, echoBuffer, RCVBUFSIZE, 0);
+        bytesRcvd = recv(sock, echoBuffer, RCVBUFSIZE - 1, 0);
+        if (bytesRcvd < 0) {
+            printf("error in recv: exiting");
+            exit(-1);
+        }
         
         int j;
         for (j = 0; j < bytesRcvd; j++) {
